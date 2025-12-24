@@ -3,3 +3,7 @@
 
 #include "MyGameModeBase.h"
 
+AMyGameModeBase::AMyGameModeBase()
+{
+	this->DefaultPawnClass = AInventoryCharacter::StaticClass();
+}
