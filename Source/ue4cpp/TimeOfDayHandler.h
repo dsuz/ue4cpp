@@ -4,24 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/PointLightComponent.h"
-#include "MyGameModeBase.h"
-#include "ParamDelegateListener.generated.h"
+#include "TimeOfDayHandler.generated.h"
+
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnTimeChangedSignature, int32, int32)
 
 UCLASS()
-class UE4CPP_API AParamDelegateListener : public AActor
+class UE4CPP_API ATimeOfDayHandler : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AParamDelegateListener();
-
-	UFUNCTION()
-	void SetLightColor(FLinearColor LightColor, bool EnableLight);
-
-	UPROPERTY()
-	UPointLightComponent* PointLight;
+	ATimeOfDayHandler();
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,8 +25,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	AMyGameModeBase* MyGameMode;
-	TArray<FColor> Colors;
-	int32 ColorIndex = 0;
+	FOnTimeChangedSignature OnTimeChanged;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 TimeScale = 60;
+	UPROPERTY()
+	int32 Hours;
+	UPROPERTY()
+	int32 Minutes;
+	UPROPERTY()
+	float ElapsedSeconds;
 };

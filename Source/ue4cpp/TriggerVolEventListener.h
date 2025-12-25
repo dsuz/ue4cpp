@@ -5,23 +5,27 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/PointLightComponent.h"
-#include "MyGameModeBase.h"
-#include "ParamDelegateListener.generated.h"
+#include "MyTriggerVolume.h"
+#include "TriggerVolEventListener.generated.h"
 
 UCLASS()
-class UE4CPP_API AParamDelegateListener : public AActor
+class UE4CPP_API ATriggerVolEventListener : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+public:		
 	// Sets default values for this actor's properties
-	AParamDelegateListener();
-
-	UFUNCTION()
-	void SetLightColor(FLinearColor LightColor, bool EnableLight);
+	ATriggerVolEventListener();
 
 	UPROPERTY()
 	UPointLightComponent* PointLight;
+	
+	UPROPERTY(EditAnywhere)
+	AMyTriggerVolume* TriggerEventSource;
+	
+	UFUNCTION()
+	void OnTriggerEvent() const;
+	
+	void OneParam(FString Message) const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,8 +35,4 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	AMyGameModeBase* MyGameMode;
-	TArray<FColor> Colors;
-	int32 ColorIndex = 0;
 };

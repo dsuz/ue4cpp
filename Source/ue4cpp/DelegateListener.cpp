@@ -11,13 +11,16 @@ ADelegateListener::ADelegateListener()
 	PrimaryActorTick.bCanEverTick = true;
 	this->PointLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("PointLight"));
 	this->RootComponent = this->PointLight;
-	this->PointLight->SetVisibility(false);
+	
 	this->PointLight->SetLightColor(FLinearColor::Red);
 }
 
 // Called when the game starts or when spawned
 void ADelegateListener::BeginPlay()
 {
+	auto LifeSpan = FMath::FRand() * 5.0f + 3.0f;
+	this->SetLifeSpan(LifeSpan);
+	this->PointLight->SetVisibility(this->EnabledLightByDefault);
 	Super::BeginPlay();
 	auto* TheWorld = GetWorld();
 
@@ -29,7 +32,8 @@ void ADelegateListener::BeginPlay()
 		
 		if (this->MyGameMode)
 		{
-			this->MyGameMode->MyStandardDelegate.BindUObject(this, &ADelegateListener::EnableLight);
+			//this->MyGameMode->MyStandardDelegate.BindUObject(this, &ADelegateListener::EnableLight);
+			this->MyDelegateHandle = this->MyGameMode->MyMulticastDelegate.AddUObject(this, &ADelegateListener::ToggleLight);
 		}
 	}
 }
@@ -39,7 +43,12 @@ void ADelegateListener::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 	
 	if (this->MyGameMode)
-		this->MyGameMode->MyStandardDelegate.Unbind();
+	{
+		//this->MyGameMode->MyStandardDelegate.Unbind();
+		this->MyGameMode->MyMulticastDelegate.Remove(this->MyDelegateHandle);
+		auto Message = FString::Printf(TEXT("EndPlay: %s"), *(this->GetName()));
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, Message);
+	}
 }
 
 // Called every frame
@@ -49,6 +58,8 @@ void ADelegateListener::Tick(float DeltaTime)
 
 }
 
+
+
 void ADelegateListener::EnableLight()
 {
 	this->PointLight->SetVisibility(true);
@@ -57,5 +68,10 @@ void ADelegateListener::EnableLight()
 void ADelegateListener::DisableLight()
 {
 	this->PointLight->SetVisibility(false);
+}
+
+void ADelegateListener::ToggleLight()
+{
+	this->PointLight->ToggleVisibility();
 }
 

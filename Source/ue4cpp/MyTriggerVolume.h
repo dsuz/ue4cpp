@@ -8,6 +8,9 @@
 #include "MyGameModeBase.h"
 #include "MyTriggerVolume.generated.h"
 
+DECLARE_EVENT(AMyTriggerVolume, FPlayerEntered)
+DECLARE_EVENT_OneParam(AMyTriggerVolume, FOneParamEvent, FString)
+
 UCLASS()
 class UE4CPP_API AMyTriggerVolume : public AActor
 {
@@ -29,8 +32,10 @@ public:
 	UBoxComponent* TriggerZone;
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
-
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
+	
+	FPlayerEntered OnPlayerEntered;
+	FOneParamEvent OnOneParam;
 
 private:
 	AMyGameModeBase* MyGameMode;

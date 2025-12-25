@@ -12,6 +12,7 @@
  */
 DECLARE_DELEGATE(FStandardDelegateSignature)
 DECLARE_DELEGATE_OneParam(FParamDelegateSignature, FLinearColor)
+DECLARE_MULTICAST_DELEGATE(FMulticastDelegateSignature)
 
 UCLASS()
 class UE4CPP_API AMyGameModeBase : public AGameModeBase
@@ -22,4 +23,5 @@ public:
 	AMyGameModeBase();
 	FStandardDelegateSignature MyStandardDelegate;
 	FParamDelegateSignature MyParamDelegate;
+	FMulticastDelegateSignature MyMulticastDelegate;
 };

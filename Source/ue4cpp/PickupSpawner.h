@@ -4,25 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/PointLightComponent.h"
-#include "MyGameModeBase.h"
-#include "ParamDelegateListener.generated.h"
+#include "Pickup.h"
+#include "PickupSpawner.generated.h"
 
 UCLASS()
-class UE4CPP_API AParamDelegateListener : public AActor
+class UE4CPP_API APickupSpawner : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AParamDelegateListener();
-
-	UFUNCTION()
-	void SetLightColor(FLinearColor LightColor, bool EnableLight);
-
+	APickupSpawner();
 	UPROPERTY()
-	UPointLightComponent* PointLight;
-
+	USceneComponent* SpawnLocation;
+	UFUNCTION()
+	void PickupCollected();
+	UFUNCTION()
+	void SpawnPickup();
+	UPROPERTY()
+	APickup* CurrentPickup;
+	FTimerHandle MyTimer;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -31,8 +33,4 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	AMyGameModeBase* MyGameMode;
-	TArray<FColor> Colors;
-	int32 ColorIndex = 0;
 };

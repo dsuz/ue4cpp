@@ -12,10 +12,15 @@ AParamDelegateListener::AParamDelegateListener()
 	this->RootComponent = this->PointLight;
 }
 
-void AParamDelegateListener::SetLightColor(FLinearColor LightColor)
+void AParamDelegateListener::SetLightColor(FLinearColor LightColor, bool EnableLight)
 {
-	this->PointLight->SetLightColor(this->Colors[this->ColorIndex]);
-	this->ColorIndex = (this->ColorIndex + 1) % this->Colors.Num();
+	this->PointLight->SetVisibility(EnableLight);
+
+	if (EnableLight)
+	{
+		this->PointLight->SetLightColor(this->Colors[this->ColorIndex]);
+		this->ColorIndex = (this->ColorIndex + 1) % this->Colors.Num();
+	}
 }
 
 // Called when the game starts or when spawned
@@ -26,7 +31,8 @@ void AParamDelegateListener::BeginPlay()
 
 	if (this->MyGameMode)
 	{
-		this->MyGameMode->MyParamDelegate.BindUObject(this, &AParamDelegateListener::SetLightColor);
+		//this->MyGameMode->MyParamDelegate.BindUObject(this, &AParamDelegateListener::SetLightColor);
+		this->MyGameMode->MyParamDelegate.BindUObject(this, &AParamDelegateListener::SetLightColor, false);
 	}
 
 	// setup colors

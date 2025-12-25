@@ -34,9 +34,16 @@ public:
 	UFUNCTION()
 	void DisableLight();
 
+	UFUNCTION()
+	void ToggleLight();
+
 	UPROPERTY()
 	UPointLightComponent* PointLight;
 
+	UPROPERTY(EditAnywhere)
+	bool EnabledLightByDefault;
+
 private:
 	AMyGameModeBase* MyGameMode;
+	FDelegateHandle MyDelegateHandle;
 };
