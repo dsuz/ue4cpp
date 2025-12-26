@@ -53,7 +53,15 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = Collision)
+	void OnOvlpBgn(UPrimitiveComponent* Comp, AActor* Other, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void A();
+	
+	virtual void PostInitializeComponents() override;
+	
 private:
 	FVector MovementInput;
 	FVector CameraInput;

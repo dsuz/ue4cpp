@@ -3,6 +3,8 @@
 
 #include "InventoryCharacter.h"
 
+#include "Components/CapsuleComponent.h"
+
 // Sets default values
 AInventoryCharacter::AInventoryCharacter()
 {
@@ -117,5 +119,25 @@ void AInventoryCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	PlayerInputComponent->BindAxis("MoveRight", this, &AInventoryCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("CameraPitch", this, &AInventoryCharacter::PitchCamera);
 	PlayerInputComponent->BindAxis("CameraYaw", this, &AInventoryCharacter::YawCamera);
+}
+
+void AInventoryCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	
+	if (this->RootComponent)
+	{
+		GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AInventoryCharacter::OnOvlpBgn);
+	}
+}
+
+void AInventoryCharacter::A_Implementation()
+{
+}
+
+void AInventoryCharacter::OnOvlpBgn_Implementation(UPrimitiveComponent* Comp, AActor* Other,
+                                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	
 }
 

@@ -12,6 +12,13 @@ AMyTriggerVolume::AMyTriggerVolume()
 	this->TriggerZone->SetBoxExtent(FVector(200.f, 200.f, 100.f));
 }
 
+void AMyTriggerVolume::OnOverlapEnd_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	auto Message = FString::Printf(TEXT("Overlap End: %s has exited the trigger volume."), *OtherActor->GetName());
+	GEngine->AddOnScreenDebugMessage(-2, 5.f, FColor::Magenta, Message);
+}
+
 // Called when the game starts or when spawned
 void AMyTriggerVolume::BeginPlay()
 {
@@ -25,6 +32,13 @@ void AMyTriggerVolume::BeginPlay()
 		//this->MyGameMode = Cast<AMyGameModeBase>(GameMode);
 		this->MyGameMode = TheWorld->GetAuthGameMode<AMyGameModeBase>();
 	}
+}
+
+void AMyTriggerVolume::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	this->TriggerZone->OnComponentBeginOverlap.AddDynamic(this, &AMyTriggerVolume::OnOverlapComponent);
+	this->TriggerZone->OnComponentEndOverlap.AddDynamic(this, &AMyTriggerVolume::OnOverlapEnd);
 }
 
 // Called every frame
@@ -55,3 +69,11 @@ void AMyTriggerVolume::NotifyActorEndOverlap(AActor* OtherActor)
 	auto Message = FString::Printf(TEXT("Actor %s has left the trigger volume."), *OtherActor->GetName());
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Message);
 }
+
+void AMyTriggerVolume::OnOverlapComponent_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	auto Message = FString::Printf(TEXT("OnOverlapComponent: %s has entered the trigger volume."), *OtherActor->GetName());
+	GEngine->AddOnScreenDebugMessage(-2, 5.f, FColor::Black, Message);
+}
+

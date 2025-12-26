@@ -20,8 +20,11 @@ class UE4CPP_API AMyGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	virtual void BeginPlay() override;
 	AMyGameModeBase();
 	FStandardDelegateSignature MyStandardDelegate;
 	FParamDelegateSignature MyParamDelegate;
 	FMulticastDelegateSignature MyMulticastDelegate;
+	UFUNCTION(BlueprintCallable, Category = "UI")
+	void ButtonClicked();
 };
