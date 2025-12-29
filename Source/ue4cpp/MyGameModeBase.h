@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "MyInterface.h"
 #include "InventoryCharacter.h"
 #include "MyGameModeBase.generated.h"
 
@@ -27,4 +28,7 @@ public:
 	FMulticastDelegateSignature MyMulticastDelegate;
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	void ButtonClicked();
+	
+private:
+	TArray<IMyInterface*> MyInterfaceInstances;
 };

@@ -19,6 +19,13 @@ void AMyTriggerVolume::OnOverlapEnd_Implementation(UPrimitiveComponent* Overlapp
 	GEngine->AddOnScreenDebugMessage(-2, 5.f, FColor::Magenta, Message);
 }
 
+void AMyTriggerVolume::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	auto Message = FString::Printf(TEXT("Overlap Begin: %s has entered the trigger volume."), *OtherActor->GetName());
+	GEngine->AddOnScreenDebugMessage(-3, 5.f, FColor::Black, Message);
+}
+
 // Called when the game starts or when spawned
 void AMyTriggerVolume::BeginPlay()
 {
@@ -37,8 +44,9 @@ void AMyTriggerVolume::BeginPlay()
 void AMyTriggerVolume::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	this->TriggerZone->OnComponentBeginOverlap.AddDynamic(this, &AMyTriggerVolume::OnOverlapComponent);
+	// this->TriggerZone->OnComponentBeginOverlap.AddDynamic(this, &AMyTriggerVolume::OnOverlapComponent);
 	this->TriggerZone->OnComponentEndOverlap.AddDynamic(this, &AMyTriggerVolume::OnOverlapEnd);
+	this->TriggerZone->OnComponentBeginOverlap.AddDynamic(this, &AMyTriggerVolume::OnBeginOverlap);
 }
 
 // Called every frame
@@ -70,10 +78,10 @@ void AMyTriggerVolume::NotifyActorEndOverlap(AActor* OtherActor)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Message);
 }
 
-void AMyTriggerVolume::OnOverlapComponent_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	auto Message = FString::Printf(TEXT("OnOverlapComponent: %s has entered the trigger volume."), *OtherActor->GetName());
-	GEngine->AddOnScreenDebugMessage(-2, 5.f, FColor::Black, Message);
-}
+// void AMyTriggerVolume::OnOverlapComponent_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+// 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+// {
+// 	auto Message = FString::Printf(TEXT("OnOverlapComponent: %s has entered the trigger volume."), *OtherActor->GetName());
+// 	GEngine->AddOnScreenDebugMessage(-2, 5.f, FColor::Black, Message);
+// }
 
