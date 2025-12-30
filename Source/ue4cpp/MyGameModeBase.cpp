@@ -10,6 +10,8 @@ void AMyGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	//GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+
+	/*
 	FTransform SpawnTransform;
 	ASingleInterfaceActor* SpawnedActor = GetWorld()->SpawnActor<ASingleInterfaceActor>(ASingleInterfaceActor::StaticClass(), SpawnTransform);
 	UClass* SpawnedActorClass = SpawnedActor->GetClass();
@@ -37,6 +39,7 @@ void AMyGameModeBase::BeginPlay()
 	
 	Message = FString::Printf(TEXT("Actors implements IMyInterface: %d"), MyInterfaceInstances.Num());
 	GEngine->AddOnScreenDebugMessage(-1, 10, FColor::Green, Message);
+	*/
 }
 
 AMyGameModeBase::AMyGameModeBase()
