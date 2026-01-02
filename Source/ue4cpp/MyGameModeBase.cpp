@@ -5,10 +5,24 @@
 
 #include "EngineUtils.h"
 #include "SingleInterfaceActor.h"
+#include "ue4cpp.h"
 
 void AMyGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("Warning Log"));
+	UE_LOG(LogCh11, Display, TEXT("Display Log"));
+	UE_LOG(LogCh11, Log, TEXT("Log"));
+	UE_LOG(LogCh11, Warning, TEXT("Warning Log"));
+	UE_LOG(LogCh11, Error, TEXT("Error Log"));
+	
+	CreateLog(LoggerName);
+	//FMessageLog Logger(LoggerName);
+
+	auto Logger = new FMessageLog(LoggerName);
+	Logger->Warning(FTEXT("A warning message from gamemode via FMessageLog."));
+	delete Logger;
+	
 	//GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 
 	/*
